@@ -24,13 +24,22 @@
 start_link(Name) ->
   gen_server:start_link({local, Name}, ?MODULE, #{}, []).
 
-%% sets the `geometry` state
-geometry(Name, Data) ->
-  gen_server:cast(Name, {geometry, Data}).
+%% sets a key/value State on the server
+set(Name, Key, Data) ->
+  gen_server:cast(Name, {set, Key, Data}).
 
 %% returns a top level State value from the
 get(Name, Key) ->
   gen_server:call(Name, {get, Key}).
+
+%% compares two process's attributes using the `Key`
+compare(Name1, Name2, Key) ->
+  Geo1 = get(Name1, Key),
+  Geo2 = get(Name2, Key),
+  List1 = maps:to_list(Geo1),
+  Diff = [{K, maps:get(K, Geo1) - maps:get(K, Geo2)}
+    || {K, _V} <- List1],
+  maps:from_list(Diff).
 
 %% gen_server callbacks
 init(State) -> {ok, State}.
@@ -38,8 +47,8 @@ init(State) -> {ok, State}.
 handle_call({get, Key}, _From, State) ->
   {reply, maps:get(Key, State), State}.
 
-handle_cast({geometry, Data}, State) ->
-  NewState = State#{geometry => Data},
+handle_cast({set, Key, Data}, State) ->
+  NewState = State#{Key => Data},
   logger:debug(NewState),
   {noreply, NewState}.
 
