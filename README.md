@@ -1,9 +1,7 @@
-gm
-=====
+Demo repo for learning:
 
-An OTP application
+- OTP
+- rebar3
+- cowboy
 
-Build
------
-
-    $ rebar3 compile
+License: MIT
