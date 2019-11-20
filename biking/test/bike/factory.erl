@@ -8,9 +8,9 @@
 %%%-------------------------------------------------------------------
 -module(factory).
 -author("aaron lelevier").
--compile(export_all).
--export([]).
+-export([bike/2]).
 
+%% Bike geometry maps to use for testing
 bike(meta_am_29, geometry) ->
   #{seat_tube_length => 465.0,
     seat_tube_angle => 76.5,

@@ -8,7 +8,6 @@
 %%%-------------------------------------------------------------------
 -module(bike_test).
 -author("aaron lelevier").
--compile(export_all).
 -include_lib("eunit/include/eunit.hrl").
 
 %% TODO: should probably move to a `setup` function
