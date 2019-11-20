@@ -22,6 +22,13 @@ rebar3 release
 rebar3 shell
 ```
 
+Create new app
+
+```
+cd apps/
+rebar3 new app <app_name>
+```
+
 # Notes
 
 `cowboy` is set as a `dep` on the `api` app
