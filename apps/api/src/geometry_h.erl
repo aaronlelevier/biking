@@ -1,8 +1,11 @@
 %%%-------------------------------------------------------------------
 %%% @author aaron lelevier
 %%% @copyright (C) 2019, <COMPANY>
-%%% @doc Example of serving a Map as JSON
+%%% @doc Queries a bike geometry and returns it if found
+%%% else returns error msg
 %%%
+%%% Example url for this handler:
+%%%   http://localhost:8080/geometry?bike=meta_ht_am
 %%% @end
 %%% Created : 20. Nov 2019 6:16 AM
 %%%-------------------------------------------------------------------
@@ -22,14 +25,13 @@ content_types_provided(Req, State) ->
   ], Req, State}.
 
 geometry_json(Req, State) ->
-  ?DEBUG({request, Req}),
-  ?DEBUG({state, State}),
-
-  % TODO: placeholder code documenting the decoded QueryString
-  DecodedQs = cowboy_req:parse_qs(Req),
-  ?DEBUG(DecodedQs),
-  [{<<"bike">>,<<"meta_am_29">>}] = DecodedQs,
-
-  Geometry = #{seat_tube_length => 465.0},
-  Body = jsx:encode(Geometry),
+  Resp = case cowboy_req:parse_qs(Req) of
+    [] ->
+      #{message => <<"needs query param: ?bike=bike_name">>};
+    [{_Key, Val}] ->
+      BikeName = binary_to_atom(Val, utf8),
+      {_, Geo} = bike_geometry:get(BikeName),
+      Geo
+  end,
+  Body = jsx:encode(Resp),
   {Body, Req, State}.

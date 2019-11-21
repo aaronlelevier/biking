@@ -22,7 +22,7 @@ can_set_and_get_state_test() ->
   Name = meta_am_29,
   Key = geometry,
 
-  Geometry = factory:bike(Name, Key),
+  Geometry = bike_geometry:numbers(Name),
 
   ?assertEqual(ok, bike:set(Name, Key, Geometry)),
   ?assertEqual(Geometry, bike:get(Name, Key)).
@@ -32,8 +32,8 @@ compare_shows_diff_between_two_processes_test() ->
   Name2 = meta_ht_am,
   % set geometry
   Key = geometry,
-  bike:set(Name1, Key, factory:bike(Name1, Key)),
-  bike:set(Name2, Key, factory:bike(Name2, Key)),
+  bike:set(Name1, Key, bike_geometry:numbers(Name1)),
+  bike:set(Name2, Key, bike_geometry:numbers(Name2)),
 
   Ret = bike:compare(Name1, Name2, Key),
 
