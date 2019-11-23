@@ -17,9 +17,3 @@ _build
 *.iml
 rebar3.crashdump
 *~
-
-# ignore Mnesia DB in VC
-Mnesia.*
-
-# cached files
-files/
