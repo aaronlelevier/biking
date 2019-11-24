@@ -9,7 +9,10 @@
 -module(jersey_h).
 -author("aaron lelevier").
 -export([]).
+
+%% debug
 -compile(export_all).
+-define(DEBUG(X), io:format("MOD:~p LINE:~p ~p~n", [?MODULE, ?LINE, X])).
 
 
 init(Req, Opts) ->
@@ -25,9 +28,12 @@ json_handler(Req, State) ->
            [] ->
              #{message => <<"needs query param: ?bike=bike_name">>};
            [{Key, Val}] ->
-             #{param => #{Key => Val}}
+             #{param => #{Key => Val}},
+             ?DEBUG(Val),
+             % query by size
+             db:select_by_size(binary_to_list(Val))
          end,
-  Body = jsx:encode(Resp),
+  Body = jsx:encode([item:to_map(X) || X <- Resp]),
   {Body, Req, State}.
 
 

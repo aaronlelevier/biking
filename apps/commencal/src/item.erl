@@ -29,6 +29,19 @@ init(S) ->
     sizes = sizes(S)
   }.
 
+% converts the `tuple` item structure from the DB to a `map`
+-spec to_map(Tuple::tuple()) -> map().
+to_map(Tuple) ->
+  maps:from_list(
+    lists:zip(
+      fields(),
+      tuple_to_list(Tuple)
+    )
+  ).
+
+fields() ->
+  [type, name, price, sale_price, discount, brand, image_url, sizes].
+
 name(S) ->
   web:extract(S, "<h1 class=\"PBMainTxt PBItemTitle\">", "</h1>").
 
