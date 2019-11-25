@@ -40,6 +40,13 @@ get_or_fetch(Url, FileName) ->
       Bin
   end.
 
+%% fetch a web page and returns as list
+-spec fetch_page(Url::string()) -> list().
+fetch_page(Url) ->
+  {ok, Response} = httpc:request(Url),
+  Bin = ahttp:response_to_binary(Response),
+  binary_to_list(Bin).
+
 href_to_filename(Href) ->
   string:concat(Href, ".html").
 

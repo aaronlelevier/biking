@@ -6,20 +6,20 @@
 %%% @end
 %%% Created : 24. Oct 2019 5:26 AM
 %%%-------------------------------------------------------------------
--module(bike).
+-module(bike_server).
 -author("aaron lelevier").
 -behavior(gen_server).
 
 %% interface exports
--export([start_link/1, get/2, set/3, compare/3]).
+-export([start_link/0, get/2, set/3, compare/3]).
 
 %% gen_server exports
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
   terminate/2, code_change/3]).
 
 %% interface
-start_link(Name) ->
-  gen_server:start_link({local, Name}, ?MODULE, #{}, []).
+start_link() ->
+  gen_server:start_link({local, ?MODULE}, ?MODULE, #{}, []).
 
 %% sets a key/value State on the server
 set(Name, Key, Data) ->

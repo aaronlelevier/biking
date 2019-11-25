@@ -29,7 +29,13 @@ init([]) ->
     SupFlags = #{strategy => one_for_all,
                  intensity => 0,
                  period => 1},
-    ChildSpecs = [],
+    ChildSpecs = [{
+      bike1, {bike_server, start_link, []},
+        permanent,
+        10000,
+        worker,
+        [bike_server]
+    }],
     {ok, {SupFlags, ChildSpecs}}.
 
 %% internal functions
